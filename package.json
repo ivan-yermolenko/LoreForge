@@ -1,0 +1,17 @@
+{
+  "name": "loreforge-monorepo",
+  "version": "1.0.0",
+  "description": "LoreForge monorepo containing frontend (Next.js) and backend (Nest.js)",
+  "private": true,
+  "scripts": {
+    "dev:frontend": "npm run dev --prefix frontend",
+    "dev:backend": "PORT=4000 npm run start:dev --prefix backend",
+    "dev": "npx concurrently \"npm:dev:frontend\" \"npm:dev:backend\"",
+    "build:frontend": "npm run build --prefix frontend",
+    "build:backend": "npm run build --prefix backend",
+    "build": "npm run build:frontend && npm run build:backend"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
