@@ -9,5 +9,5 @@ export const getTypeOrmConfig = (configService: ConfigService): TypeOrmModuleOpt
   password: configService.get<string>('DB_PASSWORD', 'postgres'),
   database: configService.get<string>('DB_DATABASE', 'loreforge'),
   autoLoadEntities: true,
-  synchronize: true,
+  synchronize: configService.get<string>('NODE_ENV') === 'development',
 });
