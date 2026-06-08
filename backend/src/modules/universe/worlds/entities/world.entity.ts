@@ -31,6 +31,6 @@ export class World {
     @JoinTable({ name: 'world_tags' })
     tags!: Tag[];
 
-    // @OneToMany(() => Character, (character) => character.world)
-    // characters!: Character[];
+    @OneToMany(() => Character, (character) => character.world)
+    characters!: Character[];
 }
