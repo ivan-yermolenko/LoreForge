@@ -19,6 +19,7 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserResponseDto } from './dto/user-response.dto';
+import { plainToInstance } from 'class-transformer';
 
 @ApiTags('users')
 @Controller('users')
@@ -44,7 +45,7 @@ export class UsersController {
     @Body() createUserDto: CreateUserDto,
   ): Promise<UserResponseDto> {
     const user = await this.usersService.create(createUserDto);
-    return UserResponseDto.fromEntity(user);
+    return plainToInstance(UserResponseDto, user, { excludeExtraneousValues: true });
   }
 
   @Get(':id')
@@ -70,7 +71,7 @@ export class UsersController {
     if (!user) {
       throw new NotFoundException(`Користувача з ID ${id} не знайдено`);
     }
-    return UserResponseDto.fromEntity(user);
+    return plainToInstance(UserResponseDto, user, { excludeExtraneousValues: true });
   }
 
   @Patch(':id')
@@ -102,6 +103,6 @@ export class UsersController {
     @Body() updateUserDto: UpdateUserDto,
   ): Promise<UserResponseDto> {
     const user = await this.usersService.update(id, updateUserDto);
-    return UserResponseDto.fromEntity(user);
+    return plainToInstance(UserResponseDto, user, { excludeExtraneousValues: true });
   }
 }
