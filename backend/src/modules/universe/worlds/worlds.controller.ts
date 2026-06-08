@@ -1,9 +1,11 @@
 import { Controller, Get, HttpStatus, Param, ParseUUIDPipe, NotFoundException } from '@nestjs/common';
 import { WorldsService } from './worlds.service';
 import { ApiOperation, ApiParam, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { WorldDto } from './dto/world.dto';
+import { plainToInstance } from 'class-transformer';
 
 @ApiTags('worlds')
-@Controller('world')
+@Controller('worlds')
 export class WorldsController {
   constructor(private readonly worldsService: WorldsService) {}
 
@@ -17,7 +19,7 @@ export class WorldsController {
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Світ успішно знайдено.',
-    // type: WorldDto,
+    type: WorldDto,
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
@@ -25,11 +27,11 @@ export class WorldsController {
   })
   public async findOne(
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
-  ): Promise<any> {
+  ): Promise<WorldDto> {
     const world = await this.worldsService.findById(id);
     if (!world) {
       throw new NotFoundException(`Світ з ID ${id} не знайдено`);
     }
-    return world;
+    return plainToInstance(WorldDto, world, { excludeExtraneousValues: true });
   }
 }

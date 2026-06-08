@@ -1,4 +1,7 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn, ManyToMany, OneToMany, JoinTable } from "typeorm";
+import { Tag } from "../../tags/entities/tag.entity";
+import { Character } from "../../characters/entities/character.entity";
+import type { LoreDetails } from "../interfaces/lore-details.interface";
 
 
 @Entity('worlds')
@@ -16,13 +19,7 @@ export class World {
     description!: string;
 
     @Column({ type: "jsonb", nullable: true })
-    loreDetails?: {
-        atmosphere?: string;
-        scale?: string;
-        magicSystem?: string;
-        geography?: string;
-        factions?: string[];
-    }
+    loreDetails?: LoreDetails;
 
     @CreateDateColumn({ type: 'timestamp' })
     createdAt!: Date;
@@ -30,10 +27,10 @@ export class World {
     @UpdateDateColumn({ type: 'timestamp' })
     updatedAt!: Date;
 
-    // @ManyToMany(() => Tag, (tag) => tag.worlds)
-    // tags: Tag[];
-    //
-    // // Персонажі, які живуть у цьому світі (One-to-Many) [cite: 105, 134]
+    @ManyToMany(() => Tag, (tag) => tag.worlds)
+    @JoinTable({ name: 'world_tags' })
+    tags!: Tag[];
+
     // @OneToMany(() => Character, (character) => character.world)
-    // characters: Character[];
+    // characters!: Character[];
 }

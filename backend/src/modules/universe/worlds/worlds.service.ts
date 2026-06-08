@@ -1,15 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from "@nestjs/typeorm";
-import { World } from "./entities/world.entity";
-import { Repository } from "typeorm";
+import { WorldsRepository } from './worlds.repository';
+import { World } from './entities/world.entity';
 
 @Injectable()
 export class WorldsService {
-    constructor(
-        @InjectRepository(World) private readonly worldRepository: Repository<World>,
-    ) {}
+  constructor(private readonly worldsRepository: WorldsRepository) {}
 
-    public async findById(id: string): Promise<World | null> {
-        return this.worldRepository.findOne({ where: { id } });
-    }
+  public async findById(id: string): Promise<World | null> {
+    return this.worldsRepository.findById(id);
+  }
 }
