@@ -5,7 +5,10 @@ import { TagsService } from './tags/tags.service';
 
 export interface NarrativeContextValidationResult {
   isValid: boolean;
-  reason?: 'WORLD_NOT_FOUND' | 'CHARACTERS_NOT_FOUND' | 'CHARACTER_WORLD_MISMATCH';
+  reason?:
+    | 'WORLD_NOT_FOUND'
+    | 'CHARACTERS_NOT_FOUND'
+    | 'CHARACTER_WORLD_MISMATCH';
   details?: string;
 }
 

@@ -19,14 +19,8 @@ import { CharactersController } from './characters/characters.controller';
 import { TagsController } from './tags/tags.controller';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([World, Character, Tag]),
-  ],
-  controllers: [
-    WorldsController,
-    CharactersController,
-    TagsController,
-  ],
+  imports: [TypeOrmModule.forFeature([World, Character, Tag])],
+  controllers: [WorldsController, CharactersController, TagsController],
   providers: [
     UniverseService,
     WorldsService,
