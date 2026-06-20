@@ -9,12 +9,7 @@ import {
   ParseUUIDPipe,
   NotFoundException,
 } from '@nestjs/common';
-import {
-  ApiTags,
-  ApiOperation,
-  ApiResponse,
-  ApiParam,
-} from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -45,7 +40,9 @@ export class UsersController {
     @Body() createUserDto: CreateUserDto,
   ): Promise<UserResponseDto> {
     const user = await this.usersService.create(createUserDto);
-    return plainToInstance(UserResponseDto, user, { excludeExtraneousValues: true });
+    return plainToInstance(UserResponseDto, user, {
+      excludeExtraneousValues: true,
+    });
   }
 
   @Get(':id')
@@ -71,7 +68,9 @@ export class UsersController {
     if (!user) {
       throw new NotFoundException(`Користувача з ID ${id} не знайдено`);
     }
-    return plainToInstance(UserResponseDto, user, { excludeExtraneousValues: true });
+    return plainToInstance(UserResponseDto, user, {
+      excludeExtraneousValues: true,
+    });
   }
 
   @Patch(':id')
@@ -103,6 +102,8 @@ export class UsersController {
     @Body() updateUserDto: UpdateUserDto,
   ): Promise<UserResponseDto> {
     const user = await this.usersService.update(id, updateUserDto);
-    return plainToInstance(UserResponseDto, user, { excludeExtraneousValues: true });
+    return plainToInstance(UserResponseDto, user, {
+      excludeExtraneousValues: true,
+    });
   }
 }

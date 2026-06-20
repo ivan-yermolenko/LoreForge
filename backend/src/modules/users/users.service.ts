@@ -1,4 +1,8 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
@@ -20,10 +24,15 @@ export class UsersService {
     });
 
     if (existingUser) {
-      throw new ConflictException(`Користувач з email ${createUserDto.email} вже існує`);
+      throw new ConflictException(
+        `Користувач з email ${createUserDto.email} вже існує`,
+      );
     }
 
-    const hashedPassword = await bcrypt.hash(createUserDto.password, this.SALT_ROUNDS);
+    const hashedPassword = await bcrypt.hash(
+      createUserDto.password,
+      this.SALT_ROUNDS,
+    );
 
     const user = this.userRepository.create({
       ...createUserDto,
@@ -47,18 +56,27 @@ export class UsersService {
   public async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
     const user = await this.findById(id);
 
-    if (!user) throw new NotFoundException(`Користувача з ID ${id} не знайдено`);
+    if (!user)
+      throw new NotFoundException(`Користувача з ID ${id} не знайдено`);
 
-    if (updateUserDto.email && updateUserDto.email.toLowerCase() !== user.email) {
+    if (
+      updateUserDto.email &&
+      updateUserDto.email.toLowerCase() !== user.email
+    ) {
       const emailConflict = await this.findByEmail(updateUserDto.email);
       if (emailConflict) {
-        throw new ConflictException(`Користувач з email ${updateUserDto.email} вже існує`);
+        throw new ConflictException(
+          `Користувач з email ${updateUserDto.email} вже існує`,
+        );
       }
       user.email = updateUserDto.email.toLowerCase();
     }
 
     if (updateUserDto.password) {
-      user.password = await bcrypt.hash(updateUserDto.password, this.SALT_ROUNDS);
+      user.password = await bcrypt.hash(
+        updateUserDto.password,
+        this.SALT_ROUNDS,
+      );
     }
 
     if (updateUserDto.nickname !== undefined) {
